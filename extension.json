@@ -1,0 +1,29 @@
+{
+	"name": "TCGplayer",
+	"version": "1.0.0",
+	"author": [
+		"Becasita"
+	],
+	"url": "https://github.com/...",
+	"descriptionmsg": "tcgplayer-desc",
+	"license-name": "",
+	"type": "api",
+	"AutoloadClasses": {
+		"TCGplayer": "TCGplayer.php"
+	},
+	"Hooks": {
+		"BeforePageDisplay": "TCGplayer::onBeforePageDisplay"
+	},
+	"ResourceModules": {
+		"ext.tcgplayer": {
+			"scripts": "modules/TCGplayer.js",
+       		"styles": "modules/TCGplayer.css",
+			"dependencies": "mediawiki.api"
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteExtPath": "TCGplayer"
+	},
+	"manifest_version": 1
+}
