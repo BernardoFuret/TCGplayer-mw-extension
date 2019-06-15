@@ -4,7 +4,7 @@
 	"author": [
 		"Becasita"
 	],
-	"url": "https://github.com/...",
+	"url": "https://github.com/BernardoFuret/TCGplayer-mw-extension",
 	"descriptionmsg": "tcgplayer-desc",
 	"license-name": "",
 	"type": "api",
@@ -17,7 +17,7 @@
 	"ResourceModules": {
 		"ext.tcgplayer": {
 			"scripts": "modules/TCGplayer.js",
-       		"styles": "modules/TCGplayer.css",
+			"styles": "modules/TCGplayer.css",
 			"dependencies": "mediawiki.api"
 		}
 	},

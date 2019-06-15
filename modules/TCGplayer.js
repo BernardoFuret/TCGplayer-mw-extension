@@ -4,7 +4,6 @@
 	"use strict";
 
 	var config = mw.config.get( [
-		//'bearerToken',
 		'wgArticleId',
 		'wgPageName',
 	] );
@@ -177,9 +176,9 @@
 	function makeData( editionLabel, editionPrices ) {
 		return Object.entries( editionPrices ).reduce( function( $tr, priceInfo ) {
 			var priceRange = priceInfo[ 0 ];
-			
+
 			var prices = priceInfo[ 1 ];
-			
+
 			return $tr.append(
 				$( '<td>', {
 					html: $( '<span>', {
@@ -205,8 +204,6 @@
 	/** Execution flow */
 
 	function flow( $content ) {
-		// TODO wait for mw.Api
-//		return mw.loader.using( 'mediawiki.api' )
 		return Promise.resolve()
 			.then( function() {
 				return api.get( {
@@ -267,7 +264,7 @@
 				if ( !prices.length ) {
 					throw new Error( 'No prices found.' );
 				}
-			
+
 				var $table = $( '<table>', {
 					'class': [
 						'wikitable',
