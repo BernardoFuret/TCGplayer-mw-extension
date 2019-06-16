@@ -201,6 +201,42 @@
 		} ) );
 	}
 
+	function applyPricesTable( $table, $content ) {
+		var $tcgPlayerRow = $( '<tr>', {
+			'class': [
+				'tcgplayer--row',
+				'tcgplayer--hidden',
+			].join( ' ' ),
+			html: $( '<td>', {
+				colspan: 2,
+			} ),
+		} );
+
+		$content.find( '.cardtablespanrow' )
+			.first()
+				.parent()
+				.after( $tcgPlayerRow )
+		;
+
+		var callback = function() {
+			if ( $( window ).width() < 960 ) {
+				$tcgPlayerRow
+					.removeClass( 'tcgplayer--hidden' )
+					.find( 'td' )
+						.append( $table )
+				;
+			} else {
+				$content.find( '.cardtable-cardimage' )
+					.append( $table )
+				;
+				
+				$tcgPlayerRow.addClass( 'tcgplayer--hidden' );
+			}
+		};
+
+		return callback() || callback;
+	}
+
 	/** Execution flow */
 
 	function flow( $content ) {
@@ -300,7 +336,7 @@
 					;
 				} );
 
-				$content.find( '.cardtable-cardimage' ).append( $table );
+				$( window ).resize( applyPricesTable( $table, $content ) );
 
 				return prices;
 			} )

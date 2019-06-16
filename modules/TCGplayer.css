@@ -6,3 +6,7 @@
 .tcgplayer__data > td::before {
 	content: '$';
 }
+
+.tcgplayer--hidden {
+	display: none;
+}
