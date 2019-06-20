@@ -191,7 +191,10 @@
 								'text'
 							].join( ' ' ),
 							href: getTCGplayerUrl(),
-							text: prices.length ? priceRangeCalculations[ priceRange ]( prices ) : 'N/A',
+							text: prices.length
+								? priceRangeCalculations[ priceRange ]( prices ).toFixed( 2 )
+								: 'N/A'
+							,
 						} ),
 					} ),
 				} )
