@@ -27,6 +27,9 @@
 			condition: 'Near_Mint',
 			orientation: 'list',
 			partner: 'yugipedia',
+			utm_campaign: 'affiliate',
+			utm_medium: 'yugipedia',
+			utm_source: 'yugipedia',
 		} ) );
 	}
 
@@ -221,19 +224,33 @@
 				.after( $tcgPlayerRow )
 		;
 
+		var wasOnNarrowScreen = false;
+		var wasOnLargeScreen = false;
+
 		var callback = function() {
 			if ( $( window ).width() < 960 ) {
-				$tcgPlayerRow
-					.removeClass( 'tcgplayer--hidden' )
-					.find( 'td' )
-						.append( $table )
-				;
+				if ( !wasOnNarrowScreen ) {
+					$tcgPlayerRow
+						.removeClass( 'tcgplayer--hidden' )
+						.find( 'td' )
+							.append( $table )
+					;
+
+					wasOnNarrowScreen = true;
+					wasOnLargeScreen = false;
+				}
 			} else {
-				$content.find( '.cardtable-cardimage' )
-					.append( $table )
-				;
-				
-				$tcgPlayerRow.addClass( 'tcgplayer--hidden' );
+				if ( !wasOnLargeScreen ) {
+					$content
+						.find( '.cardtable-cardimage' )
+							.append( $table )
+					;
+					
+					$tcgPlayerRow.addClass( 'tcgplayer--hidden' );
+
+					wasOnNarrowScreen = false;
+					wasOnLargeScreen = true;
+				}
 			}
 		};
 
