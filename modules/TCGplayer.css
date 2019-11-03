@@ -1,9 +1,9 @@
-.tcgplayer {
+.tcgplayer__data {
 	width: 100%;
 	text-align: center;
 }
 
-.tcgplayer__data > td::before {
+.tcgplayer__data--row > td::before {
 	content: '$';
 }
 

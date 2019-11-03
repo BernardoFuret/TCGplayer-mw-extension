@@ -167,16 +167,7 @@
 
 	/** Design & Interface */
 
-	function makeHeader( editionLabel ) {
-		return $( '<tr>', {
-			html: $( '<th>', {
-				colspan: '3',
-				text: editionInfo[ editionLabel ].name,
-			} ),
-		} );
-	}
-
-	function makeData( editionLabel, editionPrices ) {
+	function makeDataRow( editionLabel, editionPrices ) {
 		return Object.entries( editionPrices ).reduce( function( $tr, priceInfo ) {
 			var priceRange = priceInfo[ 0 ];
 
@@ -203,58 +194,11 @@
 				} )
 			);
 		}, $( '<tr>', {
-			'class': 'tcgplayer__data',
-		} ) );
-	}
-
-	function applyPricesTable( $table, $content ) {
-		var $tcgPlayerRow = $( '<tr>', {
-			'class': [
-				'tcgplayer--row',
-				'tcgplayer--hidden',
-			].join( ' ' ),
-			html: $( '<td>', {
-				colspan: 2,
+			'class': 'tcgplayer__data--row',
+			html: $( '<th>', {
+				text: editionInfo[ editionLabel ].name,
 			} ),
-		} );
-
-		$content.find( '.cardtablespanrow' )
-			.first()
-				.parent()
-				.after( $tcgPlayerRow )
-		;
-
-		var wasOnNarrowScreen = false;
-		var wasOnLargeScreen = false;
-
-		var callback = function() {
-			if ( $( window ).width() < 960 ) {
-				if ( !wasOnNarrowScreen ) {
-					$tcgPlayerRow
-						.removeClass( 'tcgplayer--hidden' )
-						.find( 'td' )
-							.append( $table )
-					;
-
-					wasOnNarrowScreen = true;
-					wasOnLargeScreen = false;
-				}
-			} else {
-				if ( !wasOnLargeScreen ) {
-					$content
-						.find( '.cardtable-cardimage' )
-							.append( $table )
-					;
-					
-					$tcgPlayerRow.addClass( 'tcgplayer--hidden' );
-
-					wasOnNarrowScreen = false;
-					wasOnLargeScreen = true;
-				}
-			}
-		};
-
-		return callback() || callback;
+		} ) );
 	}
 
 	/** Execution flow */
@@ -325,38 +269,44 @@
 					'class': [
 						'wikitable',
 						'plainlinks',
-						'tcgplayer',
+						'tcgplayer__data',
 					].join( ' ' ),
-					html: $( '<caption>', {
-						html: $( '<a>', {
-							rel: 'nofollow',
-							href: 'https://www.tcgplayer.com/',
-							text:'TCGplayer',
-						} ),
-					} ).append( ' Prices' ),
 				} );
 
+				var $caption = $( '<caption>', {
+					html: $( '<a>', {
+						rel: 'nofollow',
+						href: 'https://www.tcgplayer.com/',
+						text:'TCGplayer',
+					} ),
+				} ).append( ' Prices' );
+
+				var $header = $( '<tr>', { 'class': 'tcgplayer__header' } )
+					.append( $( '<th>', {
+						'class': 'tcgplayer__header--empty',
+						html: '&nbsp;',
+					} ) )
+					.append( $( '<th>', { text: 'Low' } ) )
+					.append( $( '<th>', { text: 'Medium' } ) )
+					.append( $( '<th>', { text: 'High' } ) )
+				;
+
+				$table
+					.append( $caption )
+					.append( $header )
+				;
+
 				Object.keys( prices ).forEach( function( editionLabel ) {
-					var $header = makeHeader( editionLabel );
-
-					var $labels = [ 'Low', 'Medium', 'High' ].reduce( function( $tr, priceRange ) {
-						return $tr.append(
-							$( '<th>', {
-								text: priceRange,
-							} )
-						);
-					}, $( '<tr>' ) );
-
-					var $data = makeData( editionLabel, prices[ editionLabel ] );
-
-					$table
-						.append( $header )
-						.append( $labels )
-						.append( $data )
+					makeDataRow( editionLabel, prices[ editionLabel ] )
+						.appendTo( $table )
 					;
 				} );
 
-				$( window ).resize( applyPricesTable( $table, $content ) );
+				$content
+					.find( '#tcgplayer' )
+						.show()
+						.append( $table )
+				;
 
 				return prices;
 			} )
