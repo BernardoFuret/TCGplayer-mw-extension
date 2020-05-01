@@ -8,12 +8,6 @@
 		'wgPageName',
 	] );
 
-	var bearerToken = '';
-
-	var bearerAuth = 'bearer '.concat( bearerToken );
-
-	var api = new mw.Api();
-
 	function getCardName() {
 		return config.wgPageName.replace( /_/g, ' ' ).split( /\s*\(/g )[ 0 ];
 	}
@@ -31,36 +25,6 @@
 			utm_medium: 'yugipedia',
 			utm_source: 'yugipedia',
 		} ) );
-	}
-
-	function getTCGplayerApiUrl( apiType ) {
-		return 'https://api.tcgplayer.com/v1.27.0/'.concat( apiType );
-	}
-
-	function callTCGplayerApi( url, data ) {
-		return $.ajax( url, {
-			crossDomain: true,
-			headers: {
-				'Accept': 'application/json',
-				'Authorization': bearerAuth,
-			},
-			data: data || JSON.stringify( false ),
-		} );
-	}
-
-	function getTCGplayerApiProductsId() {
-		return callTCGplayerApi( getTCGplayerApiUrl( 'catalog/products' ), {
-			'productName': getCardName(),
-			'limit': 100,
-		} );
-	}
-
-	function getTCGplayerApiPrices( productId ) {
-		return callTCGplayerApi(
-			getTCGplayerApiUrl(
-				'pricing/product/'.concat( productId )
-			)
-		);
 	}
 
 	function hash( label, isUltimate ) {
@@ -119,11 +83,13 @@
 							get: function() {
 								return (
 									this.low.length
-									+ this.mid.length
-									+ this.high.length
+									+
+									this.mid.length
+									+
+									this.high.length
 								);
 							}
-						},
+						}/*,*/
 					)
 				);
 			},
@@ -150,7 +116,7 @@
 					return length + this.get( edition ).length;
 				}.bind( this ), 0 );
 			}
-		},
+		}/*,*/
 	);
 
 	var priceRangeCalculations = {
@@ -203,47 +169,11 @@
 
 	/** Execution flow */
 
-	function flow( $content ) {
-		return Promise.resolve()
-			.then( function() {
-				return api.get( {
-					action: 'query',
-					prop: 'categories',
-					titles: config.wgPageName,
-					format: 'json',
-					cllimit: 50,
-				} );
-			} )
-			.then( function( res ) {
-				var thisPageData = res.query.pages[ config.wgArticleId ];
-
-				if ( !thisPageData || !thisPageData.categories ) {
-					throw new Error( 'Failed to get categories for this page.' );
-				}
-
-				return thisPageData.categories.some( function( c ) {
-					return c.title === 'Category:TCG cards';
-				} );
-			} )
-			.then( function( isTcgCard ) {
-				if ( isTcgCard ) {
-					return getTCGplayerApiProductsId();
-				} else {
-					throw new Error( 'Not a TCG card.' ); // TODO: branch here.
-				}
-			} )
-			.then( function( res ) {
-				if ( !res.success ) {
-					throw new Error( 'Failed to get product IDs:', res.errors );
-				}
-
-				return res.results.map( function( product ) {
-					return getTCGplayerApiPrices( product.productId );
-				} );
-			} )
-			.then( Promise.all.bind( Promise ) )
-			.then( function( allRes ) {
-				return allRes.reduce( function( prices, productPrices ) {
+	function flow( allPricesApiResults ) {
+		return Promise.resolve( allPricesApiResults )
+			// TODO: Check errors
+			.then( function( allPricesApiResults ) {
+				return allPricesApiResults.reduce( function( prices, productPrices ) {
 					if ( !productPrices.success ) {
 						console.warn( 'Error on', productPrices, productPrices.errors );
 
@@ -255,7 +185,7 @@
 							editionHash[ editionPrice.subTypeName ] || hash( 'O' ), // TODO
 							editionPrice.lowPrice,
 							editionPrice.midPrice,
-							editionPrice.highPrice,
+							editionPrice.highPrice/*,*/
 						);
 					}, prices );
 				}, Object.create( Prices ) );
@@ -302,7 +232,7 @@
 					;
 				} );
 
-				$content
+				$( '#content' ) // TODO: checks
 					.find( '#tcgplayer' )
 						.show()
 						.append( $table )
@@ -315,6 +245,6 @@
 		;
 	}
 
-	mw.hook( 'wikipage.content' ).add( flow );
+	mw.hook( 'ext.tcgplayerPrices' ).add( flow );
 
 } )( window, window.jQuery, window.mediaWiki, window.console );

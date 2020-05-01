@@ -1,29 +1,33 @@
 {
 	"name": "TCGplayer",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"author": [
 		"Becasita"
 	],
 	"url": "https://github.com/BernardoFuret/TCGplayer-mw-extension",
 	"descriptionmsg": "tcgplayer-desc",
 	"license-name": "",
-	"type": "api",
+	"type": "hooks",
 	"AutoloadClasses": {
-		"TCGplayer": "TCGplayer.php"
+		"TCGplayerHooks": "includes/TCGplayerHooks.php"
 	},
 	"Hooks": {
-		"BeforePageDisplay": "TCGplayer::onBeforePageDisplay"
+		"BeforePageDisplay": "TCGplayerHooks::onBeforePageDisplay"
+	},
+	"MessagesDirs": {
+		"TCGplayer": [
+			"i18n"
+		]
 	},
 	"ResourceModules": {
 		"ext.tcgplayer": {
 			"scripts": "modules/TCGplayer.js",
-			"styles": "modules/TCGplayer.css",
-			"dependencies": "mediawiki.api"
+			"styles": "modules/TCGplayer.css"
 		}
 	},
 	"ResourceFileModulePaths": {
 		"localBasePath": "",
 		"remoteExtPath": "TCGplayer"
 	},
-	"manifest_version": 1
+	"manifest_version": 2
 }

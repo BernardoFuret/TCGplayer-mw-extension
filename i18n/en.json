@@ -1,0 +1,8 @@
+{
+	"@metadata": {
+		"authors": [
+			"Becasita"
+		]
+	},
+	"tcgplayer-desc": "Uses the TCGplayer API to list card prices on TCG card pages."
+}
