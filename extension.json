@@ -1,13 +1,13 @@
 {
 	"name": "TCGplayer",
-	"version": "2.0.0",
+	"version": "3.0.0",
 	"author": [
 		"Becasita"
 	],
 	"url": "https://github.com/BernardoFuret/TCGplayer-mw-extension",
 	"descriptionmsg": "tcgplayer-desc",
 	"license-name": "",
-	"type": "hooks",
+	"type": "api",
 	"AutoloadClasses": {
 		"TCGplayerHooks": "includes/TCGplayerHooks.php"
 	},

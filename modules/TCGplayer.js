@@ -1,15 +1,23 @@
-
-
-( function( window, $, mw, console ) {
+/**
+ * TCGplayerPrices
+ * Queries the server for the TCGplayer prices
+ * for this card. Handles the results and their
+ * insertion into the page.
+ * This JS module is only loaded if the card is
+ * released in the TCG. Thus, that check is not
+ * done here, but by the backend.
+ */
+( function __extTCGplayerPrices( window, $, mw, console ) {
 	"use strict";
 
 	var config = mw.config.get( [
-		'wgArticleId',
-		'wgPageName',
+		'wgTitle',
 	] );
 
+	var api;
+
 	function getCardName() {
-		return config.wgPageName.replace( /_/g, ' ' ).split( /\s*\(/g )[ 0 ];
+		return config.wgTitle.split( /\s*\(/g )[ 0 ];
 	}
 
 	function getTCGplayerUrl() {
@@ -25,6 +33,14 @@
 			utm_medium: 'yugipedia',
 			utm_source: 'yugipedia',
 		} ) );
+	}
+
+	function getTCGplayerPrices() { // TODO
+		/*return api.get( {
+			action: 'tcgplayerPrices',
+			// pagename: TODO: pass pagename or title?
+		} );*/
+		return Promise.reject( 'Not ready yet! Just for test.' );
 	}
 
 	function hash( label, isUltimate ) {
@@ -169,9 +185,12 @@
 
 	/** Execution flow */
 
-	function flow( allPricesApiResults ) {
-		return Promise.resolve( allPricesApiResults )
-			// TODO: Check errors
+	function flow( $content ) {
+		return getTCGplayerPrices()
+			.then( function( apiResponse ) {
+				// TODO: Check errors
+				return apiResponse;
+			} )
 			.then( function( allPricesApiResults ) {
 				return allPricesApiResults.reduce( function( prices, productPrices ) {
 					if ( !productPrices.success ) {
@@ -207,7 +226,7 @@
 					html: $( '<a>', {
 						rel: 'nofollow',
 						href: 'https://www.tcgplayer.com/',
-						text:'TCGplayer',
+						text:'TCGplayer TEST',
 					} ),
 				} ).append( ' Prices' );
 
@@ -232,10 +251,10 @@
 					;
 				} );
 
-				$( '#content' ) // TODO: checks
+				$content
 					.find( '#tcgplayer' )
-						.show()
 						.append( $table )
+						.show()
 				;
 
 				return prices;
@@ -245,6 +264,10 @@
 		;
 	}
 
-	mw.hook( 'ext.tcgplayerPrices' ).add( flow );
+	mw.loader.using( 'mediawiki.api' ).then( function() {
+		api = new mw.Api();
+
+		mw.hook( 'wikipage.content' ).add( flow );
+	} );
 
 } )( window, window.jQuery, window.mediaWiki, window.console );
