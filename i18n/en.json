@@ -4,5 +4,9 @@
 			"Becasita"
 		]
 	},
-	"tcgplayer-desc": "Uses the TCGplayer API to list card prices on TCG card pages."
+	"tcgplayer-desc": "Uses the TCGplayer API to list card prices on TCG card pages.",
+	"apihelp-tcgplayerprices-description": "Get the prices for a given card, by querying the TCGplayer API.",
+	"apihelp-tcgplayerprices-summary": "Get the prices for a given card, by querying the TCGplayer API.",
+	"apihelp-tcgplayerprices-param-card": "The card to get the prices for.",
+	"apihelp-tcgplayerprices-example": "Get the prices for \"[[Tragoedia]]\"."
 }

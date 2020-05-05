@@ -4,5 +4,9 @@
 			"Becasita"
 		]
 	},
-	"tcgplayer-desc": "The description for the TCGplayer extension."
+	"tcgplayer-desc": "The description for the TCGplayer extension.",
+	"apihelp-tcgplayerprices-description": "The description for the tcgplayerprices endpoint.",
+	"apihelp-tcgplayerprices-summary": "A summary for the tcgplayerprices endpoint.",
+	"apihelp-tcgplayerprices-param-card": "The description for the card parameter used by the tcgplayerprices endpoint.",
+	"apihelp-tcgplayerprices-example": "Usage example of the tcgplayerprices endpoint"
 }
