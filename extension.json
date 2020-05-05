@@ -8,8 +8,13 @@
 	"descriptionmsg": "tcgplayer-desc",
 	"license-name": "",
 	"type": "api",
+	"APIModules": {
+		"tcgplayerprices": "ApiTCGplayerPrices"
+	},
 	"AutoloadClasses": {
-		"TCGplayerHooks": "includes/TCGplayerHooks.php"
+		"ApiTCGplayerPrices": "includes/ApiTCGplayerPrices.php",
+		"TCGplayerHooks": "includes/TCGplayerHooks.php",
+		"TCGplayerManager": "includes/TCGplayerManager.php"
 	},
 	"Hooks": {
 		"BeforePageDisplay": "TCGplayerHooks::onBeforePageDisplay"
@@ -21,8 +26,8 @@
 	},
 	"ResourceModules": {
 		"ext.tcgplayer": {
-			"scripts": "modules/TCGplayer.js",
-			"styles": "modules/TCGplayer.css"
+			"scripts": "modules/TCGplayerPrices.js",
+			"styles": "modules/TCGplayerPrices.css"
 		}
 	},
 	"ResourceFileModulePaths": {
