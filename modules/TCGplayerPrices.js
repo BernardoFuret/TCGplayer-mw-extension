@@ -20,6 +20,13 @@
 		return config.wgTitle.split( /\s*\(/g )[ 0 ];
 	}
 
+	function getTCGplayerPrices() {
+		return api.get( {
+			action: 'tcgplayerprices',
+			card: getCardName(),
+		} );
+	}
+
 	function getTCGplayerUrl() {
 		return 'https://shop.tcgplayer.com/yugioh/product/show?'.concat( $.param( {
 			newSearch: false,
@@ -33,14 +40,6 @@
 			utm_medium: 'yugipedia',
 			utm_source: 'yugipedia',
 		} ) );
-	}
-
-	function getTCGplayerPrices() { // TODO
-		/*return api.get( {
-			action: 'tcgplayerPrices',
-			// pagename: TODO: pass pagename or title?
-		} );*/
-		return Promise.reject( 'Not ready yet! Just for test.' );
 	}
 
 	function hash( label, isUltimate ) {
@@ -188,13 +187,16 @@
 	function flow( $content ) {
 		return getTCGplayerPrices()
 			.then( function( apiResponse ) {
-				// TODO: Check errors
-				return apiResponse;
+				if ( apiResponse.error ) {
+					throw new Error( apiResponse.error.message );
+				}
+
+				return apiResponse.tcgplayerprices;
 			} )
 			.then( function( allPricesApiResults ) {
 				return allPricesApiResults.reduce( function( prices, productPrices ) {
-					if ( !productPrices.success ) {
-						console.warn( 'Error on', productPrices, productPrices.errors );
+					if ( productPrices.errors.length ) {
+						console.warn( '[ext.TCGplayer] - Error on', productPrices, productPrices.errors );
 
 						return prices;
 					}
@@ -226,7 +228,7 @@
 					html: $( '<a>', {
 						rel: 'nofollow',
 						href: 'https://www.tcgplayer.com/',
-						text:'TCGplayer TEST',
+						text:'TCGplayer',
 					} ),
 				} ).append( ' Prices' );
 
