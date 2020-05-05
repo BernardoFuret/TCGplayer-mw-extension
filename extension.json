@@ -26,13 +26,13 @@
 	},
 	"ResourceModules": {
 		"ext.tcgplayer": {
-			"scripts": "modules/TCGplayerPrices.js",
-			"styles": "modules/TCGplayerPrices.css"
+			"scripts": "TCGplayerPrices.js",
+			"styles": "TCGplayerPrices.css"
 		}
 	},
 	"ResourceFileModulePaths": {
-		"localBasePath": "",
-		"remoteExtPath": "TCGplayer"
+		"localBasePath": "modules",
+		"remoteExtPath": "TCGplayer/modules"
 	},
 	"manifest_version": 2
 }
