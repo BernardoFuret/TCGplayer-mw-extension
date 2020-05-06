@@ -1,0 +1,13 @@
+<?php
+/**
+ * Configuration file for the TCGplayer extension.
+ * Place this file on the same folder as `LocalSettings.php`.
+ * Then add `require_once 'TCGplayerConfig.php';` to
+ * LocalSettings.php, before `wfLoadExtension( 'TCGplayer' )`.
+ */
+
+// Define the TCGplayer API version to use:
+$tcgplayerConfigApiVersion = 'version';
+
+// TCGplayer API Bearer token:
+$tcgplayerConfigBearerToken = 'token';
