@@ -15,7 +15,12 @@ class TCGplayerManager {
 	 * Initialize properties. 
 	 */
 	public function __construct() {
-		$this->TCGPLAYER_API = 'https://api.tcgplayer.com/' . getenv( 'TCGPLAYER_API_VERSION' );
+		global
+			$tcgplayerConfigApiVersion,
+			$tcgplayerConfigBearerToken
+		;
+
+		$this->TCGPLAYER_API = 'https://api.tcgplayer.com/' . $tcgplayerConfigApiVersion;
 
 		$this->TCGPLAYER_API_ENDPOINT = [
 			'catalog' => '/catalog/products?',
@@ -24,7 +29,7 @@ class TCGplayerManager {
 
 		$this->TCGPLAYER_API_HEADERS = [
 			'Accept: application/json',
-			'Authorization: bearer ' . getenv( 'TCGPLAYER_BEARER_TOKEN' ),
+			'Authorization: bearer ' . $tcgplayerConfigBearerToken,
 		];
 	}
 
