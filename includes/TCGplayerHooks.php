@@ -5,7 +5,7 @@
  */
 class TCGplayerHooks {
 
-	private static $TCGPLAYER_API = 'http://api.tcgplayer.com/' . getenv( 'TCGPLAYER_API_VERSION' );
+	private static $TCGPLAYER_API = 'http://api.tcgplayer.com/' /*. getenv( 'TCGPLAYER_API_VERSION' )*/;
 
 	private static $TCGPLAYER_API_ENDPOINT = [
 		'catalog' => '/catalog/products?',
@@ -14,7 +14,7 @@ class TCGplayerHooks {
 
 	private static $TCGPLAYER_API_HEADERS =  [
 		'Accept: application/json',
-		'Authorization: bearer ' . getenv( 'TCGPLAYER_BEARER_TOKEN' ),
+		'Authorization: bearer ' /*. getenv( 'TCGPLAYER_BEARER_TOKEN' )*/,
 	];
 
 	/**
