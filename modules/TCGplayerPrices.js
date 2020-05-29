@@ -17,7 +17,7 @@
 	var api;
 
 	function getCardName() {
-		return config.wgTitle.split( /\s*\(/g )[ 0 ];
+		return config.wgTitle.split( /\s*\(/g )[ 0 ].replace( /@/, '' );
 	}
 
 	function getTCGplayerPrices() {
