@@ -187,8 +187,12 @@
 	function flow( $content ) {
 		return getTCGplayerPrices()
 			.then( function( apiResponse ) {
-				if ( apiResponse.error ) {
-					throw new Error( apiResponse.error.message );
+				var tcgpApiCallError = apiResponse.tcgplayerprices.error;
+
+				if ( tcgpApiCallError ) {
+					throw new Error(
+						'TCGplayer API call error: ' + tcgpApiCallError.message
+					);
 				}
 
 				return apiResponse.tcgplayerprices;
