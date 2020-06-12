@@ -55,13 +55,13 @@ class TCGplayerManager {
 			if ( curl_errno( $ch ) || $apiRes === false ) {
 				$errorMessage = curl_error( $ch );
 
-				throw new Exception( 'CURL Error: ' . $errorMessage );
+				throw new Exception( 'CURL Error: ' . $errorMessage . ' On: ' . $endpoint );
 			}
 
 			$responseCode = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
 
 			if ( $responseCode >= 400 ) {
-				throw new Exception( 'HTTP Error: ' . $responseCode );
+				throw new Exception( 'HTTP Error: ' . $responseCode . ' On: ' . $endpoint );
 			}
 		} finally {
 			curl_close( $ch );
