@@ -16,6 +16,8 @@
 
 	var api;
 
+	var PARTNER_URL = 'https://partner.tcgplayer.com/yugipedia?u=';
+
 	function getCardName() {
 		return config.wgTitle.split( /\s*\(/g )[ 0 ].replace( /@/, '' );
 	}
@@ -28,17 +30,9 @@
 	}
 
 	function getTCGplayerUrl() {
-		return 'https://shop.tcgplayer.com/yugioh/product/show?'.concat( $.param( {
-			newSearch: false,
-			IsProductNameExact: false,
-			ProductName: getCardName(),
-			Type: 'Cards',
-			condition: 'Near_Mint',
-			orientation: 'list',
-			partner: 'yugipedia',
-			utm_campaign: 'affiliate',
-			utm_medium: 'yugipedia',
-			utm_source: 'yugipedia',
+		return 'https://www.tcgplayer.com/search/yugioh/product?'.concat( $.param( {
+			productLineName: 'yugioh',
+			q: getCardName()
 		} ) );
 	}
 
@@ -165,7 +159,7 @@
 								'external',
 								'text'
 							].join( ' ' ),
-							href: getTCGplayerUrl(),
+							href: PARTNER_URL + encodeURIComponent( getTCGplayerUrl() ),
 							text: prices.length
 								? priceRangeCalculations[ priceRange ]( prices ).toFixed( 2 )
 								: 'N/A'
