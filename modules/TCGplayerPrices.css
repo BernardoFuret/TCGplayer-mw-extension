@@ -1,5 +1,11 @@
-.tcgplayer__data {
+.tcgplayer__data.tcgplayer__data {
+	display: table;
 	width: 100%;
+	text-align: center;
+}
+
+.tcgplayer__data.tcgplayer__data caption {
+	display: table-caption;
 	text-align: center;
 }
 
