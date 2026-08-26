@@ -27,7 +27,11 @@
 	"ResourceModules": {
 		"ext.tcgplayer": {
 			"scripts": "TCGplayerPrices.js",
-			"styles": "TCGplayerPrices.css"
+			"styles": "TCGplayerPrices.css",
+			"targets": [
+				"desktop",
+				"mobile"
+			]
 		}
 	},
 	"ResourceFileModulePaths": {
