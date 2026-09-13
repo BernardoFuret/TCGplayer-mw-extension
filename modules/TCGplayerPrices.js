@@ -24,6 +24,23 @@
 		return window.dataLayer.push( event );
 	}
 
+	function registerViewEvent( $table ) {
+		var tableViewObserver = new IntersectionObserver( function( entries, observer ) {
+			entries.forEach( function( entry ) {
+				if ( entry.isIntersecting ) {
+					datalayerPush( {
+						event: 'price table view'
+					} );
+
+					// Fire once.
+					observer.unobserve( entry.target );
+				}
+			} );
+		} );
+
+		tableViewObserver.observe( $table[ 0 ] );
+	}
+
 	function getCardName() {
 		return config.wgTitle.split( /\s*\(/g )[ 0 ].replace( /@/, '' );
 	}
@@ -238,6 +255,8 @@
 						'tcgplayer__data',
 					].join( ' ' ),
 				} );
+
+				registerViewEvent( $table );
 
 				var $caption = $( '<caption>', {
 					html: $( '<a>', {
