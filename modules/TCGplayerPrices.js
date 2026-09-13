@@ -18,6 +18,12 @@
 
 	var PARTNER_URL = 'https://partner.tcgplayer.com/yugipedia?u=';
 
+	function datalayerPush( event ) {
+		window.dataLayer = window.dataLayer || [];
+
+		return window.dataLayer.push( event );
+	}
+
 	function getCardName() {
 		return config.wgTitle.split( /\s*\(/g )[ 0 ].replace( /@/, '' );
 	}
@@ -148,6 +154,8 @@
 
 			var prices = priceInfo[ 1 ];
 
+			var priceValue = priceRangeCalculations[ priceRange ]( prices ).toFixed( 2 );
+
 			return $tr.append(
 				$( '<td>', {
 					html: $( '<span>', {
@@ -161,9 +169,18 @@
 							].join( ' ' ),
 							href: PARTNER_URL + encodeURIComponent( getTCGplayerUrl() ),
 							text: prices.length
-								? priceRangeCalculations[ priceRange ]( prices ).toFixed( 2 )
+								? priceValue
 								: 'N/A'
 							,
+							click: function() {
+								datalayerPush( {
+									event: 'price table click',
+									card_name: getCardName(),
+									edition: editionInfo[ editionLabel ].name,
+									price_tier: priceRange,
+									price_value: priceValue
+								} );
+							}
 						} ),
 					} ),
 				} )
