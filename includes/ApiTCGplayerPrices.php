@@ -5,24 +5,42 @@
  */
 class ApiTCGplayerPrices extends ApiBase {
 
+	private const CACHE_TTL = 3600 * 24; // 1 day
+
 	private $tcgplayer;
+
+	public function isReadMode() {
+		return true;
+	}
+
+	public function mustBePosted() {
+		return false;
+	}
 
 	/**
 	 * Override constructor to allow storing an instance of
 	 * the `TCGplayerManager`.
-	 * @see ApiBase::__construct()	 
+	 * @see ApiBase::__construct()
 	 */
 	public function __construct( ApiMain $mainModule, $moduleName ) {
 		parent::__construct( $mainModule, $moduleName );
 
 		$this->tcgplayer = new TCGplayerManager();
 	}
-  
+
 	/**
 	 * Override abstract method `execute`.
 	 * @see ApiBase::execute()
 	 */
 	public function execute() {
+		// Allow caching
+
+		$this->getMain()->setCacheMode( 'public' );
+
+		$this->getMain()->setCacheMaxAge( self::CACHE_TTL );
+
+		// Request handling
+
 		$parameters = $this->extractRequestParams();
 
 		$cardName = $parameters[ 'card' ];
