@@ -5,7 +5,7 @@
  */
 class ApiTCGplayerPrices extends ApiBase {
 
-	private const CACHE_TTL = 3600 * 24; // 1 day
+	private const CACHE_TTL = 3600 * 24 * 6; // 6 days
 
 	private $tcgplayer;
 
