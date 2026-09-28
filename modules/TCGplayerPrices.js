@@ -215,18 +215,7 @@
 	function flow( $content ) {
 		return getTCGplayerPrices()
 			.then( function( apiResponse ) {
-				var tcgpApiCallError = apiResponse.tcgplayerprices.error;
-
-				if ( tcgpApiCallError ) {
-					throw new Error(
-						'TCGplayer API call error: ' + tcgpApiCallError.message
-					);
-				}
-
-				return apiResponse.tcgplayerprices;
-			} )
-			.then( function( allPricesApiResults ) {
-				return allPricesApiResults.reduce( function( prices, productPrices ) {
+				return apiResponse.tcgplayerprices.reduce( function( prices, productPrices ) {
 					if ( productPrices.errors.length ) {
 						console.warn( '[ext.TCGplayer] - Error on', productPrices, productPrices.errors );
 

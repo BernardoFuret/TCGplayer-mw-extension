@@ -51,23 +51,22 @@ class ApiTCGplayerPrices extends ApiBase {
 			$tcgplayerCardIds = $this->tcgplayer->callApiProductsId( $cardName );
 
 			if ( $tcgplayerCardIds[ 'success' ] ) {
-				$resultData = array_map( function( $product ): ?array {
-					return $this->tcgplayer->callApiProductsPrices( $product[ 'productId' ] );
-				}, $tcgplayerCardIds[ 'results' ] );
+				$resultData = $this->tcgplayer->callApiProductsPrices(
+					array_column( $tcgplayerCardIds[ 'results' ], 'productId' )
+				);
 			} else {
-				$resultData = [
-					'error' => [
-						'message' => 'TCGplayer API Error: Failed to get product IDs.',
-						'data' => $tcgplayerCardIds[ 'errors' ],
-					],
-				];
+				$this->dieWithError(
+					'TCGplayer API Error: Failed to get product IDs.',
+					'tcgplayer-api-error',
+					[ 'tcgplayerCardIdsErrors' => $tcgplayerCardIds[ 'errors' ] ]
+				);
 			}
 		} catch ( Exception $e ) {
-			$resultData = [
-				'error' => [
-					'message' => $e->getMessage(),
-				],
-			];
+		  $this->dieWithError(
+				'TCGplayer API Error: Failed to get card info.',
+				'tcgplayer-api-error',
+				[ 'message' => $e->getMessage() ]
+			);
 		}
 
 		$this->getResult()->addValue( null, $this->getModuleName(), $resultData );
