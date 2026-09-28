@@ -45,6 +45,10 @@ class TCGplayerManager {
 
 		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
 
+		curl_setopt( $ch, CURLOPT_CONNECTTIMEOUT, 5 );
+
+		curl_setopt( $ch, CURLOPT_TIMEOUT, 15 );
+
 		curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'GET' );
 
 		curl_setopt( $ch, CURLOPT_HTTPHEADER, $this->TCGPLAYER_API_HEADERS );
@@ -79,7 +83,7 @@ class TCGplayerManager {
 		return $this->callApi(
 			$this->TCGPLAYER_API_ENDPOINT[ 'catalog' ] . http_build_query( [
 				'productName' => $cardName,
-				'limit' => 100,
+				'limit' => 50,
 				//'getExtendedFields' => true,
 			] )
 		);
