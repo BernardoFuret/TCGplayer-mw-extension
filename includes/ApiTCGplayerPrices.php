@@ -55,14 +55,14 @@ class ApiTCGplayerPrices extends ApiBase {
 					array_column( $tcgplayerCardIds[ 'results' ], 'productId' )
 				);
 			} else {
-				 $this->dieWithError(
+				$this->dieWithError(
 					'TCGplayer API Error: Failed to get product IDs.',
 					'tcgplayer-api-error',
 					[ 'tcgplayerCardIdsErrors' => $tcgplayerCardIds[ 'errors' ] ]
 				);
 			}
 		} catch ( Exception $e ) {
-		    $this->dieWithError(
+		  $this->dieWithError(
 				'TCGplayer API Error: Failed to get card info.',
 				'tcgplayer-api-error',
 				[ 'message' => $e->getMessage() ]
