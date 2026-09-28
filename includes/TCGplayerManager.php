@@ -90,14 +90,13 @@ class TCGplayerManager {
 	}
 
 	/**
-	 * Gets the card prices from the TCGplayer site, based on the ID.
-	 * @param string $productId A product ID for a card.
-	 * @return array JSON representation of the TCGplayer API response.
+	 * Gets card prices from the TCGplayer site, based on their product IDs.
+	 * @param string[] $productIds Product IDs for the cards.
+	 * @return array|null JSON representation of the TCGplayer API response.
 	 */
-	public function callApiProductsPrices( string $productId ): ?array {
+	public function callApiProductsPrices( array $productIds ): ?array {
 		return $this->callApi(
-			$this->TCGPLAYER_API_ENDPOINT[ 'pricing' ] . $productId
+			$this->TCGPLAYER_API_ENDPOINT[ 'pricing' ] . implode( ',', $productIds )
 		);
 	}
-
 }

@@ -51,9 +51,9 @@ class ApiTCGplayerPrices extends ApiBase {
 			$tcgplayerCardIds = $this->tcgplayer->callApiProductsId( $cardName );
 
 			if ( $tcgplayerCardIds[ 'success' ] ) {
-				$resultData = array_map( function( $product ): ?array {
-					return $this->tcgplayer->callApiProductsPrices( $product[ 'productId' ] );
-				}, $tcgplayerCardIds[ 'results' ] );
+				$resultData = $this->tcgplayer->callApiProductsPrices(
+					array_column( $tcgplayerCardIds[ 'results' ], 'productId' )
+				);
 			} else {
 				 $this->dieWithError(
 					'TCGplayer API Error: Failed to get product IDs.',
