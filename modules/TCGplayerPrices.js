@@ -215,22 +215,22 @@
 	function flow( $content ) {
 		return getTCGplayerPrices()
 			.then( function( apiResponse ) {
-				return apiResponse.tcgplayerprices.reduce( function( prices, productPrices ) {
-					if ( productPrices.errors.length ) {
-						console.warn( '[ext.TCGplayer] - Error on', productPrices, productPrices.errors );
+				var pricesObject =  Object.create( Prices )
 
-						return prices;
-					}
+				if ( apiResponse.tcgplayerprices.errors.length ) {
+					console.warn( '[ext.TCGplayer] - Error on', apiResponse, apiResponse.tcgplayerprices.errors );
 
-					return productPrices.results.reduce( function( prices, editionPrice ) {
-						return prices.add(
-							editionHash[ editionPrice.subTypeName ] || hash( 'O' ), // TODO
-							editionPrice.lowPrice,
-							editionPrice.midPrice,
-							editionPrice.highPrice/*,*/
-						);
-					}, prices );
-				}, Object.create( Prices ) );
+					return pricesObject;
+				}
+
+				return apiResponse.tcgplayerprices.results.reduce( function( pricesAcc, editionPrice ) {
+					return pricesAcc.add(
+						editionHash[ editionPrice.subTypeName ] || hash( 'O' ), // TODO
+						editionPrice.lowPrice,
+						editionPrice.midPrice,
+						editionPrice.highPrice/*,*/
+					);
+				}, pricesObject );
 			} )
 			.then( function( prices ) {
 				if ( !prices.length ) {
