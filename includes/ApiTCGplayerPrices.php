@@ -33,12 +33,6 @@ class ApiTCGplayerPrices extends ApiBase {
 	 * @see ApiBase::execute()
 	 */
 	public function execute() {
-		// Allow caching
-
-		$this->getMain()->setCacheMode( 'public' );
-
-		$this->getMain()->setCacheMaxAge( self::CACHE_TTL );
-
 		// Request handling
 
 		$parameters = $this->extractRequestParams();
@@ -68,6 +62,12 @@ class ApiTCGplayerPrices extends ApiBase {
 				[ 'message' => $e->getMessage() ]
 			);
 		}
+
+		// Allow caching
+
+		$this->getMain()->setCacheMode( 'public' );
+
+		$this->getMain()->setCacheMaxAge( self::CACHE_TTL );
 
 		$this->getResult()->addValue( null, $this->getModuleName(), $resultData );
 	}
